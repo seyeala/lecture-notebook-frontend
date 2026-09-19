@@ -20,6 +20,7 @@ void main() {
   test('parses verbose local Whisper transcript with timestamps', () async {
     final client = MockClient((request) async {
       expect(request.url.host, '127.0.0.1');
+      expect(request.followRedirects, isFalse);
       return http.Response(
         jsonEncode({
           'text': 'First segment. Second segment.',
