@@ -6,7 +6,7 @@ import 'package:butterfly_api/butterfly_api.dart';
 
 class LectureCaptureService {
   LectureCaptureService({DateTime Function()? clock})
-    : _clock = clock ?? DateTime.now;
+      : _clock = clock ?? DateTime.now;
 
   final DateTime Function() _clock;
   String? _sessionId;
