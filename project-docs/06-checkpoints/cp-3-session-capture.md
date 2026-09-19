@@ -1,6 +1,6 @@
 # CP-3: Session Capture and Export Contract
 
-Status: implementation in progress on `project/cp-3-session-capture`.
+Status: implementation complete; awaiting final CI rerun and manual Gate 3 capture validation.
 
 ## Purpose
 
