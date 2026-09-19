@@ -2,21 +2,26 @@
 
 This directory contains project-control documentation for the Live Lecture-to-LaTeX Notebook frontend fork.
 
-The upstream `docs/` directory belongs to the Butterfly documentation site. Keep project governance, checkpoint, gate, audit, architecture, and compliance material in `project-docs/` unless there is a deliberate documentation-site migration.
+The upstream `docs/` directory belongs to the Butterfly documentation site. Keep project governance, checkpoint, gate, audit, architecture, compliance, and runbook material in `project-docs/` unless there is a deliberate documentation-site migration.
 
 ## Current checkpoint
 
 ```text
-Current checkpoint: CP-0 Fork Stabilization
-Current hard gate: Gate 0 Repo Safe
-Application code changes: not started
+Current stacked branch: project/cp-1-build-baseline
+Base branch for CP-1 while CP-0 is open: project/bootstrap-controls
+Current checkpoint on this branch: CP-1 Build Baseline
+Current hard gate on this branch: Gate 1 Builds Clean
+Application feature code changes: not started
+Backend dependency: none
 ```
+
+CP-0 remains the first gate for the repository. CP-1 is stacked on CP-0 so the build-baseline work can be reviewed without waiting for CP-0 owner-side settings.
 
 ## Directory map
 
 ```text
 00-audit/
-  Repository audit, upstream sync policy, and workflow risk findings.
+  Repository audit, upstream sync policy, workflow risk findings, and build-baseline audit.
 
 01-product/
   Product brief, MVP scope, non-goals, and user-flow material.
@@ -35,6 +40,9 @@ Application code changes: not started
 
 08-decisions/
   Architecture Decision Records.
+
+09-runbooks/
+  Local development, frontend build, and future operational instructions.
 ```
 
 ## Operating rule
@@ -51,3 +59,7 @@ Gate 1: Builds clean
 CP-2: Split-pane shell
 Gate 2: UI shell accepted
 ```
+
+## CP-1 rule
+
+CP-1 must remain frontend-only. It may add build documentation and a frontend build workflow. It must not add a backend, API client, secrets, auth, AI calls, audio recorder, PDF viewer, split-pane UI, or deployment pipeline.
