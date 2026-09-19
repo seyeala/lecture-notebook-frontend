@@ -93,10 +93,10 @@ class GeneratedNotesPanel extends StatelessWidget {
                           ),
                         ],
                         const SizedBox(height: 12),
-                        const FilledButton.icon(
+                        FilledButton.icon(
                           onPressed: null,
-                          icon: Icon(Icons.auto_awesome_outlined),
-                          label: Text('Generate Notes'),
+                          icon: const Icon(Icons.auto_awesome_outlined),
+                          label: const Text('Generate Notes'),
                         ),
                       ],
                     ),
