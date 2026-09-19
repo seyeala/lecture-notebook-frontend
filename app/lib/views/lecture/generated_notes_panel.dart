@@ -57,7 +57,9 @@ class GeneratedNotesPanel extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'This panel is a CP-2 layout placeholder. Generation, audio, and PDF loading are added in later checkpoints.',
+                          'This panel is a CP-2 layout placeholder. Generation, '
+                          'audio, and PDF loading are added in later '
+                          'checkpoints.',
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
