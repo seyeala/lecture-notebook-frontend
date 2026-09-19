@@ -45,75 +45,115 @@ Deliverables:
 
 ```text
 Left pane keeps existing Butterfly notebook behavior.
-Right pane displays a static PDF placeholder.
-Toolbar contains placeholder Generate control.
-No backend integration yet.
+Right pane displays a Generated Notes placeholder.
+Expanded-width split layout.
+Compact-width notebook-only fallback.
+No backend integration.
+No audio/transcription.
 ```
 
 Gate: Gate 2 UI Shell Accepted.
 
-## CP-3: Session Capture
+## CP-3: Notebook Session Capture
 
-Purpose: prove the frontend can produce backend-ready artifacts.
+Purpose: prove the frontend can produce a local notebook/session capture bundle without a backend.
 
 Deliverables:
 
 ```text
-Session ID concept.
-Notebook/page export path identified.
-Page image or PDF export spike.
-Page metadata captured where possible.
+LectureSessionManifest.
+LecturePageManifest.
+LectureCaptureBundle.
+Stable session ID.
+Native Butterfly notebook bytes.
+Current page ID.
+Ordered page list.
+DocumentBloc page-transition observation.
+Coarse page active-from / active-to timing.
+Local Capture Session inspection.
+Focused manifest/session tests.
 ```
 
 Gate: Gate 3 Notebook Capture Accepted.
 
-## CP-4: Audio Recording
+## CP-4: Local Audio and Whisper Transcription
 
-Purpose: prove browser audio capture.
+Purpose: record lecture audio locally, transcribe it locally, retain only the transcript/timing metadata, and discard temporary audio.
 
 Deliverables:
 
 ```text
-Record and stop controls.
-Audio blob captured.
-Duration displayed.
-Local playback test.
-Upload-ready audio format selected.
+AudioCaptureArtifact.
+Browser MediaRecorder capture.
+Record/Stop controls.
+Duration/status UI.
+LocalTranscript.
+TranscriptSegment.
+LocalTranscriptionService.
+Loopback-only LocalWhisperHttpTranscriptionService.
+Local FastAPI + OpenAI Whisper companion.
+Temporary OS audio cleanup in companion.
+Frontend in-memory byte discard.
+Local companion runbook.
+Chunked transcription production plan.
 ```
 
 Gate: Gate 4 Audio Capture Accepted.
 
-## CP-5: Backend Contract Stub
+## CP-5: Transcript-First Backend Contract
 
-Purpose: connect frontend to a fake backend before real AI.
+Purpose: connect frontend to a fake/minimal backend using transcript-first lecture artifacts, without uploading raw audio by default.
+
+Default backend payload:
+
+```text
+LectureSessionManifest.
+Native Butterfly notebook artifact or selected page renderings.
+LocalTranscript with timestamped segments.
+Course/profile identifier.
+Instructor generation instruction.
+```
+
+Explicitly excluded by default:
+
+```text
+raw microphone audio
+microphone chunks
+cloud transcription credential
+remote speech-to-text request
+```
 
 Deliverables:
 
 ```text
-Create session.
-Upload fake assets.
-Start fake generation job.
-Receive job status.
-Display returned sample PDF.
+POST /sessions.
+POST /sessions/{id}/capture.
+POST /sessions/{id}/generate.
+GET /jobs/{id}.
+GET /jobs/{id}/events.
+GET /outputs/{id}.
+Fake/minimal generation job.
+Sample returned PDF/output metadata.
+Request inspection proving raw audio is absent.
 ```
 
 Gate: Gate 5 Backend Contract Accepted.
 
 ## CP-6: Generated PDF Viewer
 
-Purpose: make the right pane real enough for MVP.
+Purpose: make the right pane consume backend-produced output robustly.
 
 Deliverables:
 
 ```text
-Load PDF from backend URL.
+Load PDF/output metadata from backend URL.
 Show loading, failed, complete, and stale states.
 Download current PDF.
 Display version label.
 Do not lose previous PDF on failed regeneration.
 ```
 
-Gate: Gate 4 Backend Boundary Accepted.
+Gate: Gate 6 Generated Output Viewer Accepted.
 
 ## CP-7: Alpha Demo
 
@@ -123,12 +163,13 @@ Deliverables:
 
 ```text
 Instructor writes notes.
-Instructor records audio.
+Instructor records and locally transcribes audio.
 Instructor clicks Generate.
+Backend receives notebook/session/transcript artifacts.
 Backend returns generated PDF.
 Right pane displays PDF.
 Source Code link is visible.
 Download PDF/TEX/transcript/logs path exists or is stubbed.
 ```
 
-Gate: Gate 5 External User Readiness.
+Gate: Gate 7 External Alpha Readiness.
