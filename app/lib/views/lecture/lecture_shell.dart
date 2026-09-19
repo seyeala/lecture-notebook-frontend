@@ -25,20 +25,21 @@ class LectureShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth < _splitBreakpoint) {
-          return notebook;
-        }
-
-        final preferredNotesWidth = constraints.maxWidth * _notesFraction;
-        final maximumNotesWidth =
-            constraints.maxWidth - LeapBreakpoints.expanded - _dividerWidth;
-        final notesWidth = math.min(preferredNotesWidth, maximumNotesWidth);
+        final showNotes = constraints.maxWidth >= _splitBreakpoint;
+        final notesWidth = showNotes
+            ? math.min(
+                constraints.maxWidth * _notesFraction,
+                constraints.maxWidth - LeapBreakpoints.expanded - _dividerWidth,
+              )
+            : 0.0;
 
         return Row(
           children: [
             Expanded(child: notebook),
-            const VerticalDivider(width: _dividerWidth, thickness: 1),
-            SizedBox(width: notesWidth, child: const GeneratedNotesPanel()),
+            if (showNotes) ...[
+              const VerticalDivider(width: _dividerWidth, thickness: 1),
+              SizedBox(width: notesWidth, child: const GeneratedNotesPanel()),
+            ],
           ],
         );
       },

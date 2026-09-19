@@ -9,42 +9,38 @@ The existing `ProjectPage` owns document loading, DocumentBloc, TransformCubit, 
 
 ## Diff review
 
-The product-code delta is intentionally small:
+The product-code delta remains intentionally small. No DocumentBloc, EditorController, import/export, persistence, dependency, backend, or network changes are introduced by CP-2.
 
-```text
-app/lib/views/lecture/generated_notes_panel.dart   new
-app/lib/views/lecture/lecture_shell.dart           new
-app/lib/views/main.dart                            minimal wrapper/import change
-```
+The responsive shell now uses the pinned Butterfly expanded breakpoint (1200 logical pixels), a 320-pixel minimum notes pane, and a one-pixel divider. The resulting minimum split width is 1521 logical pixels. Earlier documentation that described a 1000-pixel split was stale and has been corrected.
 
-No DocumentBloc, EditorController, import/export, persistence, dependency, backend, or network changes are present.
+The notebook remains under the same `Row -> Expanded` widget path before and after the notes pane appears. This avoids disposing and recreating notebook-local widget state solely because the window crossed the split breakpoint.
 
 ## CI evidence
 
-Initial PR head `308836c8d20fa0c62023dff1261ab1310b8a2eab`:
+Head `ac67a7ccb85958e9459e8d91254e4bc43ed428fe` completed all declared workflows successfully:
 
 ```text
-Frontend Build Baseline: PASS
-Inherited Flutter build: PASS
-Dart quality: FAIL
+Dart quality: PASS, run 35422199482
+Frontend Build Baseline: PASS, run 35422199492
+Inherited Flutter build: PASS, run 35422199480
 ```
 
-The Dart-quality failure was isolated to the app job's formatting verification step. API and tools quality jobs passed. The new CP-2 Dart files were subsequently revised to conform to formatter output. CI must rerun on the revised head before the automated portion of Gate 2 can pass.
+Those runs validate the pre-regression-test head. The state-preservation/layout regression test added after that head must pass on the new commit before automated Gate 2 evidence is current again.
 
 ## Interaction risk
 
-The Generated Notes panel is a sibling of the notebook region rather than an overlay, so it should not receive pointer events inside the notebook's allocated region. This is structurally favorable but does not replace browser/device interaction testing.
+The Generated Notes panel is a sibling of the notebook region rather than an overlay, so it should not receive pointer events inside the notebook's allocated region. The new widget test covers full-width behavior below the split threshold, notebook state preservation while crossing the threshold, and notes sizing at a wide viewport. These automated checks do not replace browser/device interaction testing.
 
 ## Remaining Gate 2 evidence
 
-- Successful revised-head CI.
+- Successful CI on the state-preservation regression commit.
 - Browser opens editor successfully.
 - Pen/stylus and mouse drawing.
 - Touch pan/zoom on a target touch device.
 - Keyboard shortcuts.
 - Page navigation.
-- Expanded-width placeholder.
-- Full-width notebook below 1000 logical pixels.
+- Expanded-width placeholder at or above the 1521 logical-pixel split threshold.
+- Full-width notebook below the split threshold.
 - Representative laptop/tablet-landscape layout.
 
 ## Audit decision
@@ -52,8 +48,8 @@ The Generated Notes panel is a sibling of the notebook region rather than an ove
 ```text
 Code-scope audit: PASS
 Architecture-boundary audit: PASS
-Initial build audit: PARTIAL PASS
-Formatting issue: FIX APPLIED; awaiting CI
+Prior-head CI: PASS
+Responsive state-preservation fix: IMPLEMENTED; awaiting CI
 Manual interaction audit: PENDING
 Gate 2 overall: PENDING
 ```
