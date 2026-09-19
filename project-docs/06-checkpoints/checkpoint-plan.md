@@ -25,17 +25,35 @@ Gate: Gate 0 Repo Safe.
 
 Purpose: prove the fork builds before product changes.
 
+CP-1 is frontend-only and requires no backend.
+
 Deliverables:
 
 ```text
 Fresh clone build instructions.
-Flutter/Dart toolchain version captured.
+Flutter/Dart toolchain version captured from app/pubspec.yaml.
+Inherited OneNote web build path documented.
 Web build command documented.
 Build warnings/errors captured.
-CI build workflow selected or adapted.
+Frontend CI build workflow added.
+No deployment, release, or secret usage.
+```
+
+Non-goals:
+
+```text
+No split-pane UI.
+No audio recording.
+No PDF viewer change.
+No session API client.
+No backend integration.
+No app/package renaming.
+No release/deploy pipeline.
 ```
 
 Gate: Gate 1 Builds Clean.
+
+Detailed checkpoint document: `project-docs/06-checkpoints/cp-1-build-baseline.md`.
 
 ## CP-2: Split-Pane Shell
 
