@@ -29,9 +29,15 @@ Pass criteria:
 Fresh clone builds the web target.
 Toolchain version is documented.
 Build command is documented.
+Frontend build workflow exists.
+No backend is required.
+No secrets are required.
+No deployment occurs.
+Build output includes app/build/web/index.html.
 Known warnings are captured.
-CI build path exists or is deliberately deferred.
 ```
+
+Detailed gate document: `project-docs/07-gates/gate-1-builds-clean.md`.
 
 ## Gate 2: UI Shell Accepted
 
