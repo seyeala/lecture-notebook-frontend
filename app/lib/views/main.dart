@@ -13,11 +13,13 @@ import 'package:butterfly/embed/embedding.dart';
 import 'package:butterfly/models/defaults.dart';
 import 'package:butterfly_api/butterfly_api.dart';
 import 'package:butterfly/renderers/renderer.dart';
+import 'package:butterfly/services/audio_capture_factory.dart';
 import 'package:butterfly/services/document_state.dart';
 import 'package:butterfly/services/export.dart';
 import 'package:butterfly/services/font.dart';
 import 'package:butterfly/services/import.dart';
 import 'package:butterfly/services/lecture_capture.dart';
+import 'package:butterfly/services/local_whisper_http.dart';
 import 'package:butterfly/services/network.dart';
 import 'package:butterfly/views/app_bar.dart';
 import 'package:butterfly/views/navigator/view.dart';
@@ -109,6 +111,13 @@ class _ProjectPageState extends State<ProjectPage> {
   final LectureCaptureService _lectureCaptureService = LectureCaptureService();
   bool _captureInProgress = false;
   String? _lastCaptureSummary;
+  final _audioCaptureService = createAudioCaptureService();
+  final _localTranscriptionService = LocalWhisperHttpTranscriptionService();
+  Timer? _audioTimer;
+  bool _isRecording = false;
+  Duration _audioDuration = Duration.zero;
+  String? _audioStatusText = 'Audio stays local';
+  String? _transcriptSummary;
 
   @override
   void initState() {
@@ -595,10 +604,87 @@ class _ProjectPageState extends State<ProjectPage> {
 
   @override
   void dispose() {
+    _audioTimer?.cancel();
+    unawaited(_audioCaptureService.dispose());
+    _localTranscriptionService.dispose();
     _closeSubscription.dispose();
     unawaited(_disposeDocumentState());
     _searchController.dispose();
     super.dispose();
+  }
+
+  Future<void> _startAudioRecording() async {
+    if (_isRecording) return;
+    setState(() {
+      _audioStatusText = 'Requesting microphone permission';
+      _transcriptSummary = null;
+      _audioDuration = Duration.zero;
+    });
+    try {
+      await _audioCaptureService.start();
+      if (!mounted) return;
+      final startedAt = _audioCaptureService.startedAt;
+      setState(() {
+        _isRecording = true;
+        _audioStatusText = 'Recording locally';
+      });
+      _audioTimer?.cancel();
+      _audioTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+        if (!mounted || startedAt == null) return;
+        setState(() {
+          _audioDuration = DateTime.now().toUtc().difference(startedAt);
+        });
+      });
+    } catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _isRecording = false;
+        _audioStatusText = 'Microphone error: $error';
+      });
+    }
+  }
+
+  Future<void> _stopAudioAndTranscribe() async {
+    if (!_isRecording) return;
+    _audioTimer?.cancel();
+    setState(() {
+      _isRecording = false;
+      _audioStatusText = 'Preparing local transcription';
+    });
+
+    final audio = await _audioCaptureService.stop();
+    if (audio == null) {
+      if (mounted) {
+        setState(() => _audioStatusText = 'No audio was captured');
+      }
+      return;
+    }
+
+    try {
+      if (mounted) {
+        setState(() {
+          _audioDuration = audio.duration;
+          _audioStatusText = 'Transcribing with local Whisper';
+        });
+      }
+      final transcript = await _localTranscriptionService.transcribe(audio);
+      if (!mounted) return;
+      setState(() {
+        _audioStatusText = 'Transcript ready • audio discarded';
+        _transcriptSummary =
+            '${transcript.segments.length} segment(s) • '
+            '${transcript.language ?? 'language unknown'} • '
+            '${transcript.modelId}';
+      });
+    } catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _audioStatusText = 'Local transcription failed • audio discarded';
+        _transcriptSummary = error.toString();
+      });
+    } finally {
+      audio.discard();
+    }
   }
 
   Future<void> _captureLectureSession() async {
@@ -771,6 +857,17 @@ class _ProjectPageState extends State<ProjectPage> {
                                                   _captureInProgress,
                                               lastCaptureSummary:
                                                   _lastCaptureSummary,
+                                              isRecording: _isRecording,
+                                              onRecord: () => unawaited(
+                                                _startAudioRecording(),
+                                              ),
+                                              onStop: () => unawaited(
+                                                _stopAudioAndTranscribe(),
+                                              ),
+                                              audioDuration: _audioDuration,
+                                              audioStatusText: _audioStatusText,
+                                              transcriptSummary:
+                                                  _transcriptSummary,
                                             ),
                                           ),
                                         ),
