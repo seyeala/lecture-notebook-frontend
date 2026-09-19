@@ -112,8 +112,7 @@ class _ProjectPageState extends State<ProjectPage> {
   bool _captureInProgress = false;
   String? _lastCaptureSummary;
   final _audioCaptureService = createAudioCaptureService();
-  final _localTranscriptionService =
-      LocalWhisperHttpTranscriptionService();
+  final _localTranscriptionService = LocalWhisperHttpTranscriptionService();
   Timer? _audioTimer;
   bool _isRecording = false;
   Duration _audioDuration = Duration.zero;
@@ -866,8 +865,7 @@ class _ProjectPageState extends State<ProjectPage> {
                                                 _stopAudioAndTranscribe(),
                                               ),
                                               audioDuration: _audioDuration,
-                                              audioStatusText:
-                                                  _audioStatusText,
+                                              audioStatusText: _audioStatusText,
                                               transcriptSummary:
                                                   _transcriptSummary,
                                             ),
