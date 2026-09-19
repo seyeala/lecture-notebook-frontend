@@ -49,9 +49,7 @@ class LectureCaptureService {
           pageId: pageId,
           pageIndex: index,
           activeFrom: _pageFirstSeen[pageId] ?? createdAt,
-          activeTo: pageId == _activePageId
-              ? null
-              : _pageLastLeft[pageId],
+          activeTo: pageId == _activePageId ? null : _pageLastLeft[pageId],
         ),
       );
     }
