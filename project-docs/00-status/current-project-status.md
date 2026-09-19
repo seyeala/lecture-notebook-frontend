@@ -65,7 +65,7 @@ No PR was merged or retargeted in this snapshot because Gate 2 is still open.
 ## Recent verified work
 
 - CP-2 exact Dart 3.13.3 formatter output: `c0bee26c0db8b93d74b022e7c2c8db4e429f1c80`.
-- CP-2 short-height notes-panel overflow fix and regression coverage are included in current PR #4 head `c4a8fb0e02e0461fce9e8d91254e4bc43ed428fe`'s successor history; re-fetch exact commits from PR history if needed.
+- CP-2 short-height notes-panel overflow fix and regression coverage are present in current PR #4 head `c4a8fb0e02e0461fce9c3772af8f6dfb821ad231`; focused GitHub CI tests for the shell pass on this head.
 - CP-3 independently verified UTC test fixture: `24b7c85999184b81b6b9679fceab747e267a4596`.
 - CP-4 native null-safety fix with standalone Dart smoke test: `d22e1ff4728ed6104fb84cd00b6597171d709612`.
 
