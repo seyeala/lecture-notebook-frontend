@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 
 import 'generated_notes_panel.dart';
 
-/// Responsive shell that preserves the existing Butterfly editor as [notebook].
-///
-/// At expanded widths the generated-notes placeholder occupies roughly 35% of
-/// the workspace. At narrower widths CP-2 intentionally leaves the notebook
-/// full-width; a compact notes toggle belongs to a later UX checkpoint.
 class LectureShell extends StatelessWidget {
-  const LectureShell({required this.notebook, super.key});
+  const LectureShell({
+    required this.notebook,
+    super.key,
+    this.onCaptureSession,
+    this.captureInProgress = false,
+    this.lastCaptureSummary,
+  });
 
   final Widget notebook;
+  final Future<void> Function()? onCaptureSession;
+  final bool captureInProgress;
+  final String? lastCaptureSummary;
 
   static const double _splitBreakpoint = 1000;
   static const double _notesFraction = 0.35;
@@ -34,7 +38,11 @@ class LectureShell extends StatelessWidget {
             ),
             SizedBox(
               width: notesWidth,
-              child: const GeneratedNotesPanel(),
+              child: GeneratedNotesPanel(
+                onCaptureSession: onCaptureSession,
+                captureInProgress: captureInProgress,
+                lastCaptureSummary: lastCaptureSummary,
+              ),
             ),
           ],
         );
