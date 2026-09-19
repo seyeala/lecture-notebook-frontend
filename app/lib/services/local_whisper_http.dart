@@ -84,7 +84,8 @@ class LocalWhisperHttpTranscriptionService
     );
   }
 
-  void close() => _client.close();
+  @override
+  void dispose() => _client.close();
 
   static bool _isLoopback(Uri uri) {
     final host = uri.host.toLowerCase();
