@@ -7,6 +7,8 @@
 - [ ] Flutter build passes.
 - [ ] Audio artifact/lifecycle tests pass.
 - [ ] No backend/upload code is introduced.
+- [ ] LocalTranscriptionService contract is used for transcription runtime isolation.
+- [ ] No cloud transcription endpoint is present.
 
 ## Browser criteria
 
@@ -19,7 +21,10 @@
 - [ ] Duration is retained.
 - [ ] Notebook drawing/navigation remains usable while recording.
 - [ ] Audio failure does not alter notebook data.
-- [ ] No audio leaves the browser.
+- [ ] No lecture audio leaves the instructor device.
+- [ ] Local transcription produces timestamped transcript output.
+- [ ] Temporary audio is deleted/released after successful transcription.
+- [ ] Cleanup failure is surfaced as a privacy-relevant error/warning.
 
 ## Pass rule
 
