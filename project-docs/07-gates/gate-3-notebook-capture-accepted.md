@@ -5,8 +5,8 @@
 - [ ] Frontend Build Baseline passes.
 - [ ] Dart quality passes.
 - [ ] Inherited Flutter build passes.
-- [ ] Capture models serialize without adding a backend dependency.
-- [ ] No API key, backend URL, auth, or upload code is introduced.
+- [x] Capture models serialize without adding a backend dependency.
+- [x] No API key, backend URL, auth, or upload code is introduced.
 
 ## Manual criteria
 
