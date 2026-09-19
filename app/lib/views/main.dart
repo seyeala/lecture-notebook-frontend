@@ -23,6 +23,7 @@ import 'package:butterfly/views/navigator/view.dart';
 import 'package:butterfly/views/toolbar/view.dart';
 import 'package:butterfly/views/edit.dart';
 import 'package:butterfly/views/error.dart';
+import 'package:butterfly/views/lecture/lecture_shell.dart';
 import 'package:butterfly/views/property.dart';
 import 'package:butterfly/widgets/document_page_preview.dart';
 import 'package:flutter/foundation.dart';
@@ -728,8 +729,10 @@ class _ProjectPageState extends State<ProjectPage> {
                                                         settings.isInline &&
                                                         saveState.editable,
                                                   ),
-                                            body: _MainBody(
-                                              viewportKey: _viewportKey,
+                                            body: LectureShell(
+                                              notebook: _MainBody(
+                                                viewportKey: _viewportKey,
+                                              ),
                                             ),
                                           ),
                                         ),
