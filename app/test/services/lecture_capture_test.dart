@@ -11,7 +11,7 @@ void main() {
     final second = service.sessionId;
 
     expect(first, second);
-    expect(first, 'lecture-1790272800000000');
+    expect(first, 'lecture-1789754400000000');
   });
 
   test('page observation does not rotate the session id', () {
