@@ -5,9 +5,11 @@ import 'package:butterfly/models/lecture_capture.dart';
 import 'package:butterfly_api/butterfly_api.dart';
 
 class LectureCaptureService {
-  LectureCaptureService({DateTime Function()? clock}) : _clock = clock ?? DateTime.now;
+  LectureCaptureService({DateTime Function()? clock}) {
+    _clock = clock ?? DateTime.now;
+  }
 
-  final DateTime Function() _clock;
+  late final DateTime Function() _clock;
   String? _sessionId;
   DateTime? _createdAt;
   String? _activePageId;
