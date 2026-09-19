@@ -57,6 +57,20 @@ void main() {
     expect(tester.getSize(find.byType(GeneratedNotesPanel)).width, 700);
     expect(tester.getSize(find.byKey(_notebookKey)).width, 1299);
   });
+
+  testWidgets('generated notes panel does not overflow at short heights', (
+    tester,
+  ) async {
+    _setViewport(tester, width: 600, height: 240);
+    addTearDown(() => _resetViewport(tester));
+
+    await tester.pumpWidget(
+      const MaterialApp(home: Scaffold(body: GeneratedNotesPanel())),
+    );
+
+    expect(tester.takeException(), isNull);
+    expect(find.byType(SingleChildScrollView), findsOneWidget);
+  });
 }
 
 Widget _buildShell(Widget notebook) {
@@ -65,9 +79,13 @@ Widget _buildShell(Widget notebook) {
   );
 }
 
-void _setViewport(WidgetTester tester, {required double width}) {
+void _setViewport(
+  WidgetTester tester, {
+  required double width,
+  double height = 900,
+}) {
   tester.view.devicePixelRatio = 1;
-  tester.view.physicalSize = Size(width, 900);
+  tester.view.physicalSize = Size(width, height);
 }
 
 void _resetViewport(WidgetTester tester) {
