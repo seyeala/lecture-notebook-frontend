@@ -16,9 +16,10 @@ class UnsupportedAudioCaptureService implements AudioCaptureService {
 
   @override
   Future<void> start() async {
+    const message = 'Audio capture is not supported on this platform yet.';
     state = AudioCaptureState.error;
-    errorMessage = 'Audio capture is not supported on this platform yet.';
-    throw UnsupportedError(errorMessage);
+    errorMessage = message;
+    throw UnsupportedError(message);
   }
 
   @override
