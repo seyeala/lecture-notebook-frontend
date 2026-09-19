@@ -4,19 +4,32 @@ Planned after Gate 4.
 
 ## Purpose
 
-Introduce the first remote backend boundary without uploading raw lecture audio.
+Introduce the first remote backend boundary without uploading raw lecture audio by default.
+
+CP-5 is a contract checkpoint, not a full AI-generation checkpoint. It proves request shape, job lifecycle, status updates, and returned sample output before model orchestration is added.
 
 ## Frontend inputs
 
 ```text
 LectureSessionManifest
-Butterfly notebook artifact / selected page renderings
+native Butterfly notebook artifact or selected page renderings
 LocalTranscript + timestamped segments
 course/profile identifier
 instructor generation instruction
 ```
 
 Raw microphone audio is excluded from the default backend request.
+
+## Explicitly excluded
+
+```text
+raw microphone audio upload
+microphone chunk upload
+cloud transcription provider credential
+remote speech-to-text request
+model orchestration secrets in frontend
+production billing/auth complexity
+```
 
 ## Initial endpoints
 
@@ -33,7 +46,23 @@ The capture request should carry the notebook/session artifacts and transcript m
 
 ## First implementation
 
-Use a fake/minimal backend first. Prove request serialization, job status, failure handling, and a returned sample PDF before adding model orchestration.
+Use a fake/minimal backend first. Prove:
+
+```text
+frontend request serialization
+payload inspection
+job creation
+job status updates
+failure handling
+sample output metadata
+sample returned PDF
+```
+
+Do not add model orchestration until the backend boundary and privacy contract are accepted.
+
+## Privacy acceptance check
+
+Gate 5 fails if the default flow uploads or persists raw microphone audio. The backend may receive local transcript segments and timing metadata, because those are the durable semantic lecture artifacts.
 
 ## Gate
 
