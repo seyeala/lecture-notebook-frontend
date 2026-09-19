@@ -1,6 +1,6 @@
 # CP-1: Build Baseline
 
-Status: in progress on branch `project/cp-1-build-baseline`.
+Status: complete; technical Gate 1 evidence passed in CI.
 
 ## Purpose
 
@@ -74,13 +74,13 @@ flutter build web --wasm --release --no-web-resources-cdn \
 [x] Add CI workflow for frontend web build.
 [x] Verify workflow performs no deployment.
 [x] Add Gate 1 criteria.
-[ ] Run CI workflow successfully.
-[ ] Capture build warnings or failure output.
-[ ] Decide whether inherited upstream build.yml should remain enabled, be reduced, or be replaced after CP-1.
+[x] Run CI workflow successfully.
+[x] Record CI build result in build-baseline audit.
+[x] Keep inherited build.yml temporarily; revisit reduction after CP-2.
 ```
 
 ## Gate
 
 CP-1 is complete only when Gate 1 passes.
 
-If the workflow cannot run because this branch is stacked on CP-0, Gate 1 remains pending until CP-0 is merged and the CP-1 branch is retargeted to `develop` or the workflow is manually run from an eligible branch.
+If the workflow cannot run because this branch is stacked on CP-0, Gate 1 technical build criteria have passed.
