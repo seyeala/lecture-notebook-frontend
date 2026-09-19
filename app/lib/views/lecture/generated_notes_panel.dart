@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
-/// Static CP-2 placeholder for the future generated lecture-note PDF.
-///
-/// This widget intentionally has no backend, PDF renderer, recording logic,
-/// or network behavior. It only proves the lecture split-pane composition.
 class GeneratedNotesPanel extends StatelessWidget {
-  const GeneratedNotesPanel({super.key});
+  const GeneratedNotesPanel({
+    super.key,
+    this.onCaptureSession,
+    this.captureInProgress = false,
+    this.lastCaptureSummary,
+  });
+
+  final Future<void> Function()? onCaptureSession;
+  final bool captureInProgress;
+  final String? lastCaptureSummary;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +35,7 @@ class GeneratedNotesPanel extends StatelessWidget {
                       style: theme.textTheme.titleMedium,
                     ),
                   ),
-                  const Chip(label: Text('Idle')),
+                  const Chip(label: Text('Local')),
                 ],
               ),
             ),
@@ -38,7 +43,7 @@ class GeneratedNotesPanel extends StatelessWidget {
             Expanded(
               child: Center(
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 320),
+                  constraints: const BoxConstraints(maxWidth: 340),
                   child: Padding(
                     padding: const EdgeInsets.all(24),
                     child: Column(
@@ -57,15 +62,37 @@ class GeneratedNotesPanel extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'This panel is a CP-2 layout placeholder. Generation, '
-                          'audio, and PDF loading are added in later '
-                          'checkpoints.',
+                          'CP-3 can capture a local notebook snapshot and '
+                          'manifest. Nothing is uploaded.',
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 20),
+                        OutlinedButton.icon(
+                          onPressed: captureInProgress
+                              ? null
+                              : () => onCaptureSession?.call(),
+                          icon: captureInProgress
+                              ? const SizedBox.square(
+                                  dimension: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Icon(Icons.inventory_2_outlined),
+                          label: const Text('Capture Session'),
+                        ),
+                        if (lastCaptureSummary != null) ...[
+                          const SizedBox(height: 16),
+                          SelectableText(
+                            lastCaptureSummary!,
+                            style: theme.textTheme.bodySmall,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                        const SizedBox(height: 12),
                         FilledButton.icon(
                           onPressed: null,
                           icon: const Icon(Icons.auto_awesome_outlined),

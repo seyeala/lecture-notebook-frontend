@@ -65,7 +65,7 @@ Page image or PDF export spike.
 Page metadata captured where possible.
 ```
 
-Gate: Gate 3 Data Export Accepted.
+Gate: Gate 3 Notebook Capture Accepted.
 
 ## CP-4: Audio Recording
 
@@ -81,7 +81,7 @@ Local playback test.
 Upload-ready audio format selected.
 ```
 
-Gate: Gate 3 Data Export Accepted, extended for audio.
+Gate: Gate 4 Audio Capture Accepted.
 
 ## CP-5: Backend Contract Stub
 
@@ -97,7 +97,7 @@ Receive job status.
 Display returned sample PDF.
 ```
 
-Gate: Gate 4 Backend Boundary Accepted.
+Gate: Gate 5 Backend Contract Accepted.
 
 ## CP-6: Generated PDF Viewer
 

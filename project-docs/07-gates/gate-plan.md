@@ -47,7 +47,7 @@ Toolbar layout is accepted.
 Tablet/laptop widths are checked.
 ```
 
-## Gate 3: Data Export Accepted
+## Gate 3: Notebook Capture Accepted
 
 Required before model/backend work.
 
@@ -61,7 +61,7 @@ Fake upload succeeds.
 No backend secrets appear in frontend.
 ```
 
-## Gate 4: Backend Boundary Accepted
+## Gate 4: Audio Capture Accepted\n\nRequired before backend contract work.\n\nPass criteria:\n\n```text\nBrowser audio recording works.\nPermission failures are handled.\nA local audio artifact is produced.\nNotebook data remains safe if recording fails.\nNo backend is required.\n```\n\n## Gate 5: Backend Contract Accepted
 
 Required before AI/model integration.
 
@@ -75,7 +75,7 @@ Generated PDF display works from backend URL.
 Failure states are visible.
 ```
 
-## Gate 5: External User Readiness
+## Gate 6: External User Readiness
 
 Required before external users.
 
