@@ -1,3 +1,4 @@
+import 'package:butterfly/views/lecture/audio_controls.dart';
 import 'package:flutter/material.dart';
 
 class GeneratedNotesPanel extends StatelessWidget {
@@ -6,11 +7,23 @@ class GeneratedNotesPanel extends StatelessWidget {
     this.onCaptureSession,
     this.captureInProgress = false,
     this.lastCaptureSummary,
+    required this.isRecording,
+    required this.onRecord,
+    required this.onStop,
+    this.audioDuration = Duration.zero,
+    this.audioStatusText,
+    this.transcriptSummary,
   });
 
   final Future<void> Function()? onCaptureSession;
   final bool captureInProgress;
   final String? lastCaptureSummary;
+  final bool isRecording;
+  final VoidCallback? onRecord;
+  final VoidCallback? onStop;
+  final Duration audioDuration;
+  final String? audioStatusText;
+  final String? transcriptSummary;
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +82,22 @@ class GeneratedNotesPanel extends StatelessWidget {
                           ),
                           textAlign: TextAlign.center,
                         ),
+                        const SizedBox(height: 20),
+                        AudioControls(
+                          isRecording: isRecording,
+                          onRecord: onRecord,
+                          onStop: onStop,
+                          duration: audioDuration,
+                          statusText: audioStatusText,
+                        ),
+                        if (transcriptSummary != null) ...[
+                          const SizedBox(height: 12),
+                          SelectableText(
+                            transcriptSummary!,
+                            style: theme.textTheme.bodySmall,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                         const SizedBox(height: 20),
                         OutlinedButton.icon(
                           onPressed: captureInProgress
