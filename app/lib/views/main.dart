@@ -640,7 +640,15 @@ class _ProjectPageState extends State<ProjectPage> {
         BlocProvider.value(value: runtime.editorController.saveCubit),
         BlocProvider.value(value: runtime.editorController.viewCubit),
       ],
-      child: BlocBuilder<DocumentBloc, DocumentState>(
+      child: BlocConsumer<DocumentBloc, DocumentState>(
+        listenWhen: (previous, current) =>
+            previous.pageName != current.pageName && current.pageName != null,
+        listener: (context, state) {
+          final pageName = state.pageName;
+          if (pageName != null) {
+            _lectureCaptureService.observePage(pageName);
+          }
+        },
         buildWhen: (previous, current) =>
             previous.runtimeType != current.runtimeType,
         builder: (context, state) {
