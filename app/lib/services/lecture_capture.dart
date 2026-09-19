@@ -55,14 +55,13 @@ class LectureCaptureService {
       );
     }
 
-    final metadata = savedData.getMetadata();
     return LectureCaptureBundle(
       manifest: LectureSessionManifest(
         schemaVersion: 1,
         sessionId: sessionId,
         createdAt: createdAt,
         capturedAt: now,
-        documentName: metadata?.name ?? '',
+        documentName: state.metadata.name,
         currentPageId: state.pageName,
         pages: pages,
       ),
