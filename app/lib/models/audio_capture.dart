@@ -14,4 +14,8 @@ class AudioCaptureArtifact {
   final DateTime endedAt;
 
   Duration get duration => endedAt.difference(startedAt);
+
+  void discard() {
+    bytes.fillRange(0, bytes.length, 0);
+  }
 }
