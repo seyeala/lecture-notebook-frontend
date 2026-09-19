@@ -37,7 +37,7 @@ The transcription endpoint accepts OpenAI-style multipart fields `file`, `model`
 
 Modern browsers can ask the user for permission when a public/HTTPS web application accesses a loopback service. Treat this permission as part of the local-companion onboarding flow. The browser app must never fall back to a remote transcription service when loopback access is denied.
 
-The frontend adapter rejects non-loopback hosts by construction.
+The frontend adapter rejects non-loopback hosts by construction and disables HTTP redirect following for transcription requests. A redirect response is treated as a transcription failure so raw audio cannot be redirected to another host.
 
 ## Data lifecycle
 
@@ -45,15 +45,21 @@ The frontend adapter rejects non-loopback hosts by construction.
 2. Browser POSTs the bytes to `127.0.0.1`.
 3. Companion writes a temporary OS file for Whisper/FFmpeg.
 4. Whisper returns text and timestamped segments.
-5. Companion deletes the temporary file in `finally`.
+5. Companion removes the temporary-file directory entry in `finally`.
 6. Frontend zeroes the in-memory audio buffer after the request resolves or fails.
 7. Transcript/timing metadata may be retained as lecture-session data.
 
-No raw lecture audio is intentionally retained.
+No raw lecture audio is intentionally retained as an application asset.
+
+### Temporary-file cleanup limits
+
+The companion's cleanup is best-effort file deletion, not guaranteed secure erasure. While transcription is running, raw audio exists in the operating system's temporary storage. A process crash, machine failure, abrupt power loss, filesystem snapshot, backup, or lower-level storage behavior can leave recoverable data outside the application's control. Operators should place the OS temporary directory on appropriately protected local storage and apply host-level retention/encryption controls where required.
+
+The current browser implementation also holds the recording in memory until transcription completes. It explicitly overwrites its managed byte buffer afterward, but runtimes, copies made by browser/media libraries, paging, crash dumps, and allocator behavior are outside that guarantee.
 
 ## Failure behavior
 
-If transcription fails, the current privacy-first implementation discards the in-memory audio rather than silently retaining it. The UI surfaces the failure and the instructor may record again.
+If transcription fails, the current privacy-first implementation discards the managed in-memory audio rather than silently retaining it. The UI surfaces the failure and the instructor may record again.
 
 ## Long lectures
 
