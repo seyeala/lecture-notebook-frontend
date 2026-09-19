@@ -28,3 +28,8 @@ The editor now listens for `DocumentBloc` page-name transitions and calls `Lectu
 Focused tests were also added for manifest JSON serialization, non-empty bundle byte handling, stable session identity, and session identity across page observations.
 
 CI and manual capture validation remain required before Gate 3 passes.
+
+
+## Final implementation status
+
+The CP-3 implementation now includes continuous page-change observation, native Butterfly notebook serialization, stable session identity, manifest serialization tests, and bundle-byte tests. Frontend Build Baseline passed on the prior head. The remaining automated blocker was Dart formatter indentation in `lecture_capture.dart`; that exact formatter output has now been applied. A fresh CI run is required before automated Gate 3 closure. Manual Capture Session validation remains required.
