@@ -1,32 +1,39 @@
 # Build Baseline Audit
 
 Date: 2026-09-18
-Branch: `project/cp-1-build-baseline`
 Checkpoint: CP-1 Build Baseline
 Gate: Gate 1 Builds Clean
 
 ## Audit summary
 
-This audit records the intended frontend-only build baseline for the forked Butterfly app. The baseline has not yet been marked as passed because the build workflow must run successfully before Gate 1 is complete.
+The frontend-only build baseline passed in GitHub Actions on commit `c865c859dd5304875eefba15d244b45e845fda55`.
 
-## Current toolchain source
+Evidence:
 
-The authoritative toolchain declaration is `app/pubspec.yaml`.
+```text
+Frontend Build Baseline: success
+Dart quality: success
+Inherited Flutter build: success
+Runner: ubuntu-26.04
+Frontend build job duration: approximately 7 minutes
+```
+
+The dedicated frontend job completed checkout, Flutter setup, dependency resolution, Rust/wasm-pack setup, OneNote web library build, nightly asset preparation, Flutter WASM web build, and output verification successfully.
+
+## Toolchain source
+
+The authoritative declaration remains `app/pubspec.yaml`.
 
 ```text
 Flutter: 3.47.4
 Dart SDK constraint: >=3.13.0 <4.0.0
-Application package name remains: butterfly
-Application version remains: 2.6.0-rc.3+198
+Application package name: butterfly
+Application version: 2.6.0-rc.3+198
 ```
 
-No package rename or app identity rename is part of CP-1.
+No package/app identity rename is part of CP-1.
 
-## Build path selected
-
-The CP-1 baseline uses the inherited Butterfly web build path rather than a simplified build, because upstream web deployment already used the OneNote web library build and WASM web output.
-
-Selected command sequence:
+## Baseline build path
 
 ```bash
 rustup toolchain install nightly --component rust-src
@@ -43,66 +50,18 @@ flutter build web --wasm --release --no-web-resources-cdn \
   --dart-define=version="$GIT_HASH"
 ```
 
-## CI workflow
-
-Added:
-
-```text
-.github/workflows/frontend-build.yml
-```
-
-Properties:
-
-```text
-read-only contents permission
-no deployment
-no release or tag creation
-no secrets required
-no backend services required
-verifies app/build/web/index.html
-```
-
 ## Backend requirement check
 
-CP-1 requires no backend. The following remain out of scope:
+No backend, database, object storage, authentication provider, AI provider, transcription provider, LaTeX compiler, deployment secret, or API key was required.
+
+## Gate decision
 
 ```text
-API gateway
-database
-object storage
-auth provider
-AI provider
-transcription provider
-LaTeX compiler
-PDF generation backend
+Technical build evidence: PASS
+Frontend build reproducibility in CI: PASS
+Backend-free requirement: PASS
+Deployment-free requirement: PASS
+Gate 1 technical decision: PASS
 ```
 
-## Current result
-
-```text
-Status: pending CI/local execution
-Gate 1: not passed yet
-Reason: workflow added, but successful build output has not yet been recorded
-```
-
-## Required evidence to close audit
-
-Record the following after CI or local build runs:
-
-```text
-commit SHA
-runner or local OS
-Flutter version output
-Dart version output
-Rust version output
-whether flutter pub get succeeded
-whether build_onenote_web.dart succeeded
-whether flutter build web succeeded
-warning summary
-error summary, if any
-final Gate 1 decision
-```
-
-## Review note
-
-Because CP-1 is currently stacked on CP-0, GitHub may not run the newly added workflow automatically until CP-0 is merged and CP-1 is retargeted to `develop`, or until the workflow is manually triggered from an eligible branch.
+Repository governance settings from Gate 0 remain a separate owner-level concern and do not invalidate the successful CP-1 build evidence.
