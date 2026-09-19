@@ -29,6 +29,9 @@ class LocalWhisperHttpTranscriptionService
   @override
   Future<LocalTranscript> transcribe(AudioCaptureArtifact audio) async {
     final request = http.MultipartRequest('POST', endpoint)
+      // Raw lecture audio must never follow a server redirect to another host.
+      // A redirect is treated as a transcription failure instead.
+      ..followRedirects = false
       ..fields['model'] = modelId
       ..fields['response_format'] = 'verbose_json'
       ..files.add(
