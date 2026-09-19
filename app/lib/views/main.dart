@@ -17,6 +17,7 @@ import 'package:butterfly/services/document_state.dart';
 import 'package:butterfly/services/export.dart';
 import 'package:butterfly/services/font.dart';
 import 'package:butterfly/services/import.dart';
+import 'package:butterfly/services/lecture_capture.dart';
 import 'package:butterfly/services/network.dart';
 import 'package:butterfly/views/app_bar.dart';
 import 'package:butterfly/views/navigator/view.dart';
@@ -105,6 +106,9 @@ class _ProjectPageState extends State<ProjectPage> {
   late final CloseSubscription _closeSubscription;
   final GlobalKey<MainViewViewportState> _viewportKey = GlobalKey();
   int _loadGeneration = 0;
+  final LectureCaptureService _lectureCaptureService = LectureCaptureService();
+  bool _captureInProgress = false;
+  String? _lastCaptureSummary;
 
   @override
   void initState() {
@@ -597,6 +601,26 @@ class _ProjectPageState extends State<ProjectPage> {
     super.dispose();
   }
 
+  Future<void> _captureLectureSession() async {
+    if (_captureInProgress) return;
+    final runtime = _runtime;
+    if (runtime == null) return;
+
+    setState(() => _captureInProgress = true);
+    try {
+      final bundle = await _lectureCaptureService.capture(runtime.bloc.state);
+      if (!mounted || bundle == null) return;
+      final manifest = bundle.manifest;
+      setState(() {
+        _lastCaptureSummary =
+            '${manifest.sessionId} • ${manifest.pages.length} page(s) • '
+            '${bundle.notebookBytes.length} bytes';
+      });
+    } finally {
+      if (mounted) setState(() => _captureInProgress = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final runtime = _runtime;
@@ -733,6 +757,12 @@ class _ProjectPageState extends State<ProjectPage> {
                                               notebook: _MainBody(
                                                 viewportKey: _viewportKey,
                                               ),
+                                              onCaptureSession:
+                                                  _captureLectureSession,
+                                              captureInProgress:
+                                                  _captureInProgress,
+                                              lastCaptureSummary:
+                                                  _lastCaptureSummary,
                                             ),
                                           ),
                                         ),
