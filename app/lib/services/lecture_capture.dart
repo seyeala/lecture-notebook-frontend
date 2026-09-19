@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:butterfly/bloc/document_bloc.dart';
 import 'package:butterfly/models/lecture_capture.dart';
-import 'package:butterfly_api/butterfly_api.dart';
 
 class LectureCaptureService {
   LectureCaptureService({DateTime Function()? clock}) {
