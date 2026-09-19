@@ -8,7 +8,7 @@ import 'generated_notes_panel.dart';
 /// the workspace. At narrower widths CP-2 intentionally leaves the notebook
 /// full-width; a compact notes toggle belongs to a later UX checkpoint.
 class LectureShell extends StatelessWidget {
-  const LectureShell({super.key, required this.notebook});
+  const LectureShell({required this.notebook, super.key});
 
   final Widget notebook;
 
@@ -28,7 +28,10 @@ class LectureShell extends StatelessWidget {
         return Row(
           children: [
             Expanded(child: notebook),
-            const VerticalDivider(width: _dividerWidth, thickness: 1),
+            const VerticalDivider(
+              width: _dividerWidth,
+              thickness: 1,
+            ),
             SizedBox(
               width: notesWidth,
               child: const GeneratedNotesPanel(),
