@@ -32,10 +32,7 @@ class LectureShell extends StatelessWidget {
         return Row(
           children: [
             Expanded(child: notebook),
-            const VerticalDivider(
-              width: _dividerWidth,
-              thickness: 1,
-            ),
+            const VerticalDivider(width: _dividerWidth, thickness: 1),
             SizedBox(
               width: notesWidth,
               child: GeneratedNotesPanel(
